@@ -1,0 +1,31 @@
+<!-- security_app/templates/security_app/security_events_list.html -->
+
+{% extends "security_app/base_generic.html" %}
+
+{% block title %}Security Events{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">События Безопасности</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Имя</th>
+                <th>Описание</th>
+                <th>Дата</th>
+                <th>Серьезность</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for event in events %}
+            <tr>
+                <td>{{ event.name }}</td>
+                <td>{{ event.description }}</td>
+                <td>{{ event.date }}</td>
+                <td>{{ event.severity }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

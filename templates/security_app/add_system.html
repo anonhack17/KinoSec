@@ -1,0 +1,23 @@
+{% extends "security_app/base_generic.html" %}
+
+{% block title %}Add System{% endblock %}
+
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form method="post">
+        {% csrf_token %}
+        <h2 class="text-center">Добавить новую систему</h2>
+        <div class="form-group">
+          <label for="id_name">Имя</label>
+          {{ form.name }}
+        </div>
+        <div class="form-group">
+          <label for="id_description">Описание</label>
+          {{ form.description }}
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Добавить систему</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

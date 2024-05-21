@@ -1,0 +1,12 @@
+{% extends "security_app/base_generic.html" %}
+
+{% block content %}
+  <h1>{{ system.name }}</h1>
+  <p>{{ system.description }}</p>
+  <h2>Security Events</h2>
+  <ul>
+    {% for event in events %}
+      <li>{{ event.occurred_at }} - {{ event.event_type }}: {{ event.description }}</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

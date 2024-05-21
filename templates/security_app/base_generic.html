@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Security Application{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'security_app/style.css' %}">
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>Security Application</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'dashboard' %}"><i class="fas fa-home"></i> Главная</a></li>
+                <li><a href="{% url 'add_system' %}"><i class="fas fa-plus"></i> Добавить систему</a></li>
+                <li><a href="{% url 'add_security_event' %}"><i class="fas fa-exclamation-triangle"></i> Добавить безопасность
+ Событие</a></li>
+                {% if user.is_authenticated %}
+                    <li>
+                        <form style="
+    background: none;
+    border: none;
+    padding: 0;
+" method="post" action="{% url 'logout' %}" class="logout-form">
+                            {% csrf_token %}
+                            <button type="submit" class="login-btn"><i class="fas fa-sign-out-alt"
+                                                                       class="login-btn"></i> Logout
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</header>
+<main style="margin-bottom: 150px">
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</main>
+<footer>
+    <div class="container">
+        <p>&copy; 2024 Security Application</p>
+    </div>
+</footer>
+</body>
+</html>

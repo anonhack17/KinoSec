@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends "security_app/base_generic.html" %}
+
+{% block title %}Systems List{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <h2 class="text-center mb-4">Список систем</h2>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+           <th>Имя</th>
+             <th>Описание</th>
+             <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for system in systems %}
+          <tr>
+            <td>{{ system.name }}</td>
+            <td>{{ system.description }}</td>
+            <td>
+              <a href="{% url 'edit_system' system.id %}" class="btn btn-sm btn-warning">Редактировать</a>
+              <a href="{% url 'delete_system' system.id %}" class="btn btn-sm btn-danger">Удалить</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
+</title>
+</head>
+<body>
+
+</body>
+</html>
