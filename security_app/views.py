@@ -2,6 +2,72 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import System, SecurityEvent, AccessLog
 from .forms import SystemForm, SecurityEventForm
+from .forms import CopyrightForm
+from .models import Copyright, Atack
+from .forms import AtackForm
+
+def add_atack(request, system_pk):
+    system = get_object_or_404(System, pk=system_pk)
+    if request.method == 'POST':
+        form = AtackForm(request.POST)
+        if form.is_valid():
+            atack = form.save(commit=False)
+            atack.system = system
+            atack.save()
+            return redirect('system_detail', pk=system.pk)
+    else:
+        form = AtackForm()
+    return render(request, 'security_app/add_atack.html', {'form': form})
+
+
+def edit_atack(request, atack_pk):
+    atack = get_object_or_404(Atack, pk=atack_pk)
+    if request.method == 'POST':
+        form = AtackForm(request.POST, instance=atack)
+        if form.is_valid():
+            form.save()
+            return redirect('system_detail', pk=atack.system.pk)
+    else:
+        form = AtackForm(instance=atack)
+    return render(request, 'security_app/edit_atack.html', {'form': form})
+
+def delete_atack(request, atack_pk):
+    atack = get_object_or_404(Atack, pk=atack_pk)
+    system_pk = atack.system.pk
+    atack.delete()
+    return redirect('system_detail', pk=system_pk)
+
+def add_copyright(request, pk):
+    system = get_object_or_404(System, pk=pk)
+
+    if request.method == 'POST':
+        form = CopyrightForm(request.POST)
+        if form.is_valid():
+            # Проверяем, существует ли уже запись с таким system_id
+            existing_copyright = Copyright.objects.filter(system=system).first()
+            if existing_copyright:
+                # Если запись уже существует, перенаправляем пользователя на страницу деталей системы
+                return redirect('system_detail', pk=pk)
+            else:
+                # Если записи нет, создаем новую запись
+                copyright = form.save(commit=False)
+                copyright.system = system
+                copyright.save()
+                return redirect('system_detail', pk=pk)
+    else:
+        form = CopyrightForm()
+    return render(request, 'security_app/add_copyright.html', {'form': form})
+
+def edit_copyright(request, pk):
+    copyright = get_object_or_404(Copyright, pk=pk)
+    if request.method == 'POST':
+        form = CopyrightForm(request.POST, instance=copyright)
+        if form.is_valid():
+            form.save()
+            return redirect('system_detail', pk=copyright.system.pk)
+    else:
+        form = CopyrightForm(instance=copyright)
+    return render(request, 'security_app/edit_copyright.html', {'form': form})
 
 def security_events_list(request):
     events = SecurityEvent.objects.all()
@@ -35,8 +101,13 @@ def dashboard(request):
 def system_detail(request, pk):
     system = get_object_or_404(System, pk=pk)
     events = SecurityEvent.objects.filter(system=system).order_by('-occurred_at')
-    return render(request, 'security_app/system_detail.html', {'system': system, 'events': events})
-
+    copyright = Copyright.objects.filter(system=system).first()
+    atacks =  system.atacks.all()
+    return render(request, 'security_app/system_detail.html', {'system': system,
+                                                               'events': events,
+                                                               'copyright': copyright
+                                                               , 'atacks': atacks
+                                                               })
 @login_required
 def add_system(request):
     if request.method == "POST":

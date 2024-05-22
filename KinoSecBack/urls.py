@@ -22,6 +22,14 @@ from security_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.dashboard, name='dashboard'),
+    path('system/<int:system_pk>/add_atack/', views.add_atack, name='add_atack'),
+    path('atack/<int:atack_pk>/edit/', views.edit_atack, name='edit_atack'),
+    path('atack/<int:atack_pk>/delete/', views.delete_atack, name='delete_atack'),
+    path('system/<int:pk>/add_copyright/', views.add_copyright, name='add_copyright'),
+    path('system/<int:pk>/edit_copyright/', views.edit_copyright, name='edit_copyright'),
+    # Изменение авторских прав
+    path('edit_copyright/<int:copyright_id>/', views.edit_copyright, name='edit_copyright'),
+    path('system/<int:pk>/', views.system_detail, name='system_detail'),
     path('security_events_list/', views.security_events_list, name='security_events_list'),  # Добавленный маршрут
     path('edit_system/<int:system_id>/', views.edit_system, name='edit_system'),
     path('system/<int:pk>/', views.system_detail, name='system_detail'),

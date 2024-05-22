@@ -24,6 +24,7 @@
             <td>{{ system.name }}</td>
             <td>{{ system.description }}</td>
             <td>
+              <a href="{% url 'system_detail' pk=system.id %}" class="btn btn-sm btn-primary">Подробнее</a>
               <a href="{% url 'edit_system' system.id %}" class="btn btn-sm btn-warning">Редактировать</a>
               <a href="{% url 'delete_system' system.id %}" class="btn btn-sm btn-danger">Удалить</a>
             </td>

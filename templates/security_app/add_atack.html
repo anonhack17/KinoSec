@@ -1,0 +1,11 @@
+{% extends "security_app/base_generic.html" %}
+
+{% block content %}
+<h2>Добавить атаку</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Отправить</button>
+    </form>
+{% endblock %}
+
